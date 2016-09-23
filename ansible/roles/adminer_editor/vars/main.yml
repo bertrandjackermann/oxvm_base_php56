@@ -1,0 +1,7 @@
+---
+adminer_editor_internal:
+  pkg_dest: "{{ adminer_editor.document_root }}/{{ adminer_editor.pkg_name }}"
+  pkg_entry_point: "{{ adminer_editor.document_root }}/index.php"
+adminer_editor:
+  pkg_name: "editor-4.2.5-mysql-en.php"
+  document_root: "/opt/adminer_editor/"

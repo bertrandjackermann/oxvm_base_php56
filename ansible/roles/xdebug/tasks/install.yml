@@ -1,0 +1,14 @@
+---
+- name: Install xDebug
+  become: yes
+  apt: pkg=php5.6-xdebug state=latest
+
+- name: Capture outgoing IP address
+  shell: route | tail -n 1 | awk -F ' ' '{print $1}' | sed 's/\.0$/\.1/g'
+  become: yes
+  register: xdebug_ip_address
+
+- name: Place xdebug configuration
+  template: src=xdebug.ini dest=/etc/php/5.6/mods-available/xdebug.ini
+  become: yes
+  notify: restart apache

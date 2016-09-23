@@ -1,0 +1,7 @@
+---
+adminer_internal:
+  pkg_dest: "{{ adminer.document_root }}/{{ adminer.pkg_name }}"
+  pkg_entry_point: "{{ adminer.document_root }}/index.php"
+adminer:
+  pkg_name: "adminer-4.2.5-en.php"
+  document_root: "/opt/adminer/"

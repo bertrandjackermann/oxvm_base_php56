@@ -1,0 +1,36 @@
+# End-of-line normalization
+* text=auto
+
+# Capistrano stuff
+/config export-ignore
+/lib export-ignore
+Capfile export-ignore
+
+# Git stuff
+.gitattributes export-ignore
+.gitignore export-ignore
+.gitkeep export-ignore
+
+# Bundler stuff
+Gemfile export-ignore
+Gemfile.lock export-ignore
+
+# Etc
+/vagrant export-ignore
+.editorconfig export-ignore
+
+#diff handling
+*.cs     text diff=csharp
+*.java   text diff=java
+*.html   text diff=html
+*.css    text
+*.js     text
+*.sql    text
+
+*.csproj text merge=union
+*.sln    text merge=union eol=crlf
+
+*.docx   diff=astextplain
+*.DOCX   diff=astextplain
+
+envvars -lf

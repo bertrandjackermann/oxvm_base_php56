@@ -1,0 +1,26 @@
+- name: Download Composer installer
+  become: yes
+  get_url: url={{ php.composer.installer_url }} dest=/tmp/composer_installer
+
+- name: Run composer installer
+  become: yes
+  shell: php /tmp/composer_installer --install-dir=/usr/local/bin --filename=composer creates=/usr/local/bin/composer
+
+- name: Ensure composer configuration directory exists
+  file: path=~/.composer/ state=directory mode=0755
+
+- name: Place composer oauth configuration for github
+  template: src=auth.json dest=~/.composer/auth.json mode=0600
+  when: php.composer.github_token
+
+- name: Install prestissimo
+  shell: "composer global require hirak/prestissimo '0.2.1'"
+  when: php.composer.prestissimo.install
+
+- name: Check for global composer.json
+  stat: path=~/.composer/composer.json
+  register: global_composer_json
+
+- name: Uninstall prestissimo
+  shell: composer global remove hirak/prestissimo
+  when: not php.composer.prestissimo.install and global_composer_json.stat.exists

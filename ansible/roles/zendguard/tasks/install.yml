@@ -1,0 +1,39 @@
+---
+- name: Stop execution of ansible and show how to proceed
+  fail:
+    msg: >
+      Current zendguard integration does not support custom php versions.
+      Please disable support of zendguard (php.zendguard.install: false) or
+      disable custom php version (remove php.version entry).
+  when: php.version
+
+- stat: path="{{ php.extension_dir }}/{{ zendguard_version_name }}.tar.gz"
+  register: zendGuardArchive
+
+- name: Download the ZendGuard shared object files
+  become: yes
+  get_url: url="{{ php.zendguard.pkg_url }}" dest="{{ php.extension_dir }}/"
+  when: zendGuardArchive.stat.exists == False
+
+- unarchive: src="{{ php.extension_dir }}/{{ zendguard_version_name }}.tar.gz" dest="{{ php.extension_dir }}/" copy=no
+  become: yes
+
+- copy: src="{{ php.extension_dir }}/{{ zendguard_version_name }}/ZendGuardLoader.so" dest="{{ php.extension_dir }}/ZendGuardLoader.so" remote_src=true
+  become: yes
+
+- copy: src="{{ php.extension_dir }}/{{ zendguard_version_name }}/opcache.so" dest="{{ php.extension_dir }}/zend_opcache.so" remote_src=true
+  become: yes
+
+- name: Place ZendGuard configuration
+  become: yes
+  template: src=zend.ini dest=/etc/php/5.6/mods-available/zend.ini
+
+- name: Disable standard PHP5 opcache
+  become: yes
+  command: phpdismod opcache
+  notify: restart apache
+
+- name: Enable ZendGuard opcache
+  become: yes
+  command: phpenmod zend
+  notify: restart apache

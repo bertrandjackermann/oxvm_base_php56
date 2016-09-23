@@ -1,0 +1,50 @@
+---
+# Override any variable from 'ansible/vars/default.yml'
+vagrant_local:
+  vm:
+    name: TolleVM
+    hostname: bsp.dev
+    aliases:
+      - www.beispiel.dev
+      - beispiel.dev
+    ip: 192.168.56.111
+    memory: '2048'
+    cpus: 2
+server:
+  timezone: Europe/Berlin
+  locale: de_DE.UTF-8
+  apt_mirror: http://de.archive.ubuntu.com/ubuntu/
+apache:
+  install: true
+  docroot: /vagrant/htdocs/
+mysql:
+  root_password: 'root'
+  database: oxid
+  dump: 'sql/db.sql'
+zendguard_version_name: 'zend-loader-php5.6-linux-x86_64'
+php:
+  ppa: php
+  packages:
+    - php5.6-gd
+    - php5.6-mysql
+    - php5.6-bcmath
+    - php5.6-xml
+    - php5.6-mbstring
+    - php5.6-curl
+    - php5.6-zip
+    - php5.6-mcrypt
+  extension_dir: '/usr/lib/php/20131226/'
+  zendguard:
+    install: true
+  xdebug:
+    install: '1'
+    host: ~
+  composer:
+    github_token: ~
+adminer:
+  install: true
+adminer_editor:
+  install: true
+mailhog:
+  install: true
+  web_port: 8025

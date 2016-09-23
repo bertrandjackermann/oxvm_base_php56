@@ -1,0 +1,17 @@
+---
+dependencies:
+  - server
+  - apache
+  - mysql
+  - php
+  - mailhog
+  - adminer
+  - adminer_editor
+  - xdebug
+  - zendguard
+  - composer
+  - {
+      role: "nodejs",
+      sudo: yes
+    }
+  - npm
